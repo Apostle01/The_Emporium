@@ -2,44 +2,56 @@
 
 {% block content %}
 
-    
-    <div class="container">
-        <div class="row">
-            <center>
-                <div class="col-8">
-                    <br/><br/>
-                    <p align="justify">
-                        Lorem ipsum odor amet, consectetuer adipiscing elit. Potenti quisque per netus at bibendum venenatis. 
-                        Semper iaculis egestas tristique tempor habitant, curae proin venenatis proin! Pulvinar himenaeos ad tincidunt senectus mi. 
-                        Ligula pulvinar bibendum elit felis semper platea. Neque fames ad vehicula litora sociosqu est proin risus rhoncus. 
-                        Cursus tortor penatibus auctor sagittis ante odio platea. Fusce scelerisque morbi urna ridiculus maximus vivamus. 
-                        Nam ut felis nulla ultricies cubilia ex nisi.
+<div class="container">
+        
+    <br/><br/>
+    <div class="card mb-3" >
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <center>
+              <h5 class="card-title">{{ product.name }}</h5>
+              <p class="card-text">{{ product.description }}</p>
+              <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
 
-                        <br/><br/>
-                        Odio tristique a lorem mus praesent suscipit posuere tristique. Augue morbi blandit, ipsum finibus ante mollis. 
-                        Sociosqu auctor amet nisl hac ornare sapien sit mollis fermentum. Imperdiet ipsum interdum lobortis porta ligula hendrerit 
-                        integer rutrum primis. Hac augue montes libero efficitur efficitur quam massa urna. Consectetur lobortis natoque integer 
-                        mauris suscipit arcu platea. Mus velit suscipit euismod mi arcu facilisi in malesuada. Ex nam lacinia turpis vestibulum 
-                        id dignissim at hendrerit.
-
-                        <br/><br/>
-                        Tempus a per class accumsan condimentum est. Rhoncus interdum ante nostra et congue nascetur tellus odio consectetur. 
-                        Habitasse elit metus dui non dolor taciti finibus. Cras nisl velit vitae lacinia nam id quisque. Consequat varius purus 
-                        arcu arcu maximus aptent urna in. Arcu metus lectus venenatis donec condimentum odio fames hac eu. Mattis suscipit duis mus 
-                        aliquam dis malesuada. Congue viverra urna bibendum dolor magnis. Egestas montes morbi quis bibendum ad potenti massa dis. 
-                        Sociosqu hendrerit netus euismod netus molestie.
-
-                        <br/><br/>
-                        Pretium hendrerit dictumst suspendisse taciti senectus dui in. Pharetra class semper fermentum lectus purus, 
-                        lacus viverra dis. Euismod laoreet a cursus senectus nisl urna finibus auctor varius. Finibus massa himenaeos 
-                        volutpat et pretium condimentum dictum ridiculus hac. Interdum quisque massa condimentum eros suspendisse. 
-                        Convallis parturient tellus nisi porttitor ultrices mi amet maximus dapibus. Fames cursus sagittis lacinia dapibus justo; 
-                        pulvinar curae.
-                    </p>
-                    <br/><br/>
+              {% if product.is_sale %}
+              <div class="d-flex justify-content-center small text-warning mb-2">
+                <div class="bi-star-fill"></div>
+                &nbsp;&nbsp;Sale!&nbsp;&nbsp;
+                <div class="bi-star-fill"></div>
                 </div>
-            </center>
+
+                <!-- Product price-->
+                <strike>
+                ${{ product.price }}
+                </strike>
+                &nbsp;
+                ${{ product.sale_price }}
+                <br/>
+                {{ product.description }}
+
+              {% else %}
+                ${{ product.price }}
+              {% endif %}
+
+              <br/><br/>
+
+              <a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
+
+              </center>
+
+            </div>
+          </div>
         </div>
+      </div>               
+    <br/><br/>
+    <br/><br/>
+    <br/><br/>
+    <br/><br/>
+                
     </div>
 
 {% endblock %}
