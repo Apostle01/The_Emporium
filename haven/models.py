@@ -3,7 +3,20 @@ import datetime
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 
-#Create Customer Profile
+class ShippingAddress(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    address_line_1 = models.CharField(max_length=255)
+    address_line_2 = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    zipcode = models.CharField(max_length=20)
+    country = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.user.username}'s Shipping Address"
+    
+
+    # Create Customer Profile
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     date_modified = models.DateTimeField(User, auto_now=True)
@@ -14,6 +27,7 @@ class Profile(models.Model):
     state = models.CharField(max_length=200, blank=True)
     zipcode = models.CharField(max_length=200, blank=True)
     country = models.CharField(max_length=200, blank=True)
+    old_cart = models.JSONField(null=True, blank=True)  # Optional: JSONField for structured data
 
     def __str__(self):
         return self.user.username
@@ -26,6 +40,8 @@ def create_profile(sender, instance, created, **kwargs):
 
 # Automate the profile
 post_save.connect(create_profile, sender=User)
+
+
 
 # Categories of Products
 class Category(models.Model):
