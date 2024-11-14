@@ -79,6 +79,7 @@ def update_password(request):
 	else:
 		messages.success(request, "You Must Be Logged In To View That Page...")
 		return redirect('home')
+	
 def update_user(request):
 	if request.user.is_authenticated:
 		current_user = User.objects.get(id=request.user.id)
