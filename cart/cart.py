@@ -1,4 +1,4 @@
-from haven.models import Product
+from haven.models import Product, Profile
 
 class Cart():
 	def __init__(self, request):
@@ -28,15 +28,15 @@ class Cart():
 
 		self.session.modified = True
 
-		# # Deal with logged in user
-		# if self.request.user.is_authenticated:
-		# 	# Get the current user profile
-		# 	current_user = Profile.objects.filter(user__id=self.request.user.id)
-		# 	# Convert {'3':1, '2':4} to {"3":1, "2":4}
-		# 	carty = str(self.cart)
-		# 	carty = carty.replace("\'", "\"")
-		# 	# Save carty to the Profile Model
-		# 	current_user.update(old_cart=str(carty))
+		# Deal with logged in user
+		if self.request.user.is_authenticated:
+			# Get the current user profile
+			current_user = Profile.objects.filter(user__id=self.request.user.id)
+			# Convert {'3':1, '2':4} to {"3":1, "2":4}
+			carty = str(self.cart)
+			carty = carty.replace("\'", "\"")
+			# Save carty to the Profile Model
+			current_user.update(old_cart=str(carty))
 
 
 	def add(self, product, quantity):
@@ -51,15 +51,15 @@ class Cart():
 
 		self.session.modified = True
 
-		# # Deal with logged in user
-		# if self.request.user.is_authenticated:
-		# 	# Get the current user profile
-		# 	current_user = Profile.objects.filter(user__id=self.request.user.id)
-		# 	# Convert {'3':1, '2':4} to {"3":1, "2":4}
-		# 	carty = str(self.cart)
-		# 	carty = carty.replace("\'", "\"")
-		# 	# Save carty to the Profile Model
-		# 	current_user.update(old_cart=str(carty))
+		# Deal with logged in user
+		if self.request.user.is_authenticated:
+			# Get the current user profile
+			current_user = Profile.objects.filter(user__id=self.request.user.id)
+			# Convert {'3':1, '2':4} to {"3":1, "2":4}
+			carty = str(self.cart)
+			carty = carty.replace("\'", "\"")
+			# Save carty to the Profile Model
+			current_user.update(old_cart=str(carty))
 
 	def cart_total(self):
 		# Get product IDS
@@ -115,15 +115,15 @@ class Cart():
 		self.session.modified = True
 	
 
-		# # Deal with logged in user
-		# if self.request.user.is_authenticated:
-		# 	# Get the current user profile
-		# 	current_user = Profile.objects.filter(user__id=self.request.user.id)
-		# 	# Convert {'3':1, '2':4} to {"3":1, "2":4}
-		# 	carty = str(self.cart)
-		# 	carty = carty.replace("\'", "\"")
-		# 	# Save carty to the Profile Model
-		# 	current_user.update(old_cart=str(carty))
+		# Deal with logged in user
+		if self.request.user.is_authenticated:
+			# Get the current user profile
+			current_user = Profile.objects.filter(user__id=self.request.user.id)
+			# Convert {'3':1, '2':4} to {"3":1, "2":4}
+			carty = str(self.cart)
+			carty = carty.replace("\'", "\"")
+			# Save carty to the Profile Model
+			current_user.update(old_cart=str(carty))
 
 
 		thing = self.cart
@@ -137,12 +137,12 @@ class Cart():
 
 		self.session.modified = True
 
-		# # Deal with logged in user
-		# if self.request.user.is_authenticated:
-		# 	# Get the current user profile
-		# 	current_user = Profile.objects.filter(user__id=self.request.user.id)
-		# 	# Convert {'3':1, '2':4} to {"3":1, "2":4}
-		# 	carty = str(self.cart)
-		# 	carty = carty.replace("\'", "\"")
-		# 	# Save carty to the Profile Model
-		# 	current_user.update(old_cart=str(carty))
+		# Deal with logged in user
+		if self.request.user.is_authenticated:
+			# Get the current user profile
+			current_user = Profile.objects.filter(user__id=self.request.user.id)
+			# Convert {'3':1, '2':4} to {"3":1, "2":4}
+			carty = str(self.cart)
+			carty = carty.replace("\'", "\"")
+			# Save carty to the Profile Model
+			current_user.update(old_cart=str(carty))

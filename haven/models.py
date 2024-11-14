@@ -16,7 +16,7 @@ class ShippingAddress(models.Model):
         return f"{self.user.username}'s Shipping Address"
     
 
-    # Create Customer Profile
+# Create Customer Profile
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     date_modified = models.DateTimeField(User, auto_now=True)
@@ -27,7 +27,8 @@ class Profile(models.Model):
     state = models.CharField(max_length=200, blank=True)
     zipcode = models.CharField(max_length=200, blank=True)
     country = models.CharField(max_length=200, blank=True)
-    old_cart = models.JSONField(null=True, blank=True)  # Optional: JSONField for structured data
+    old_cart = models.CharField(max_length=200, blank=True, null=True)
+    old_cart = models.JSONField(max_length=200, blank=True, null=True)  # Optional: JSONField for structured data
 
     def __str__(self):
         return self.user.username
