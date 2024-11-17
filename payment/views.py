@@ -56,12 +56,17 @@ def process_order(request):
             create_order.save()
 
             # Add order items
+            # Get order ID
             order_id = create_order.pk
+            # Get product ID
             for product in cart_products():
                 product_id = product.id
+                # Get product price
                 price = product.sale_price if product.is_sale else product.price
+                # Get quantity
                 for key, value in quantities().items():
                     if int(key) == product.id:
+                        # Create order item
                         create_order_item = OrderItem(
                             order_id=order_id, 
                             product_id=product_id, 
