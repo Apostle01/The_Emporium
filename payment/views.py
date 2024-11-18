@@ -7,23 +7,83 @@ from payment.models import ShippingAddress, Order, OrderItem
 from django.contrib.auth.models import User
 from django.contrib import messages
 from haven.models import Product, Profile
+import datetime
 
 # from paypal.standard.forms import PayPalPaymentsForm
 # import uuid
 
 from django.http import JsonResponse
 
-def not_shipped_dash(request):
+def orders(request, pk):
     if request.user.is_authenticated and request.user.is_superuser:
-        orders = Order.objects.filter(shipped=False)
-        return render(request, "payment/not_shipped_dash.html", {"orders":orders})
+        # Get the order
+        order = Order.objects.get(id=pk)
+        # Get the order items
+        items = OrderItem.objects.filter(order=pk)
+        
+        if request.POST:
+            status = request.POST['shipping_status']
+            # Check if true or false
+            if status == "true":
+                # Get the order
+                order = Order.objects.filter(id=pk)
+                # Update the status
+                now = datetime.datetime.now()
+                order.update(shipped=True, date_shipped=now)
+            else:
+                 # Get the order
+                order = Order.objects.filter(id=pk)
+                # Update the status
+                order.update(shipped=False)
+            messages.success(request, "Shipping Status Updated")
+            return redirect('home')
+        
+        return render(request, 'payment/orders.html', {"order":order, "items":items})
     else:
         messages.success(request, "Access Denied")
         return redirect('home')
 
+def not_shipped_dash(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        orders = Order.objects.filter(shipped=False)
+        if request.POST:
+            status = request.POST['shipping_status']
+            num = request.POST['num']
+            # Get the order
+            order = Order.objects.filter(id=num)
+            # grab Date and Time
+            now = datetime.datetime.now()
+            # update order
+            order.update(shipped=True, date_shipped=now)
+            # redirect
+            messages.success(request, "Shipping Status Updated")
+            return redirect('home')
+        
+        return render(request, 'payment/not_shipped_dash.html', {"orders":orders})
+    else:
+        messages.success(request, "Access Denied")
+        return redirect('home')
+        # return render(request, "payment/not_shipped_dash.html", {"orders":orders})
+# else:
+#     messages.success(request, "Access Denied")
+#     return redirect('home')
+
 def shipped_dash(request):
     if request.user.is_authenticated and request.user.is_superuser:
         orders = Order.objects.filter(shipped=True)
+        if request.POST:
+            status = request.POST['shipping_status']
+            num = request.POST['num']
+            # Get the order
+            order = Order.objects.filter(id=num)
+            # grab Date and Time
+            now = datetime.datetime.now()
+            # update order
+            order.update(shipped=False)
+            # redirect
+            messages.success(request, "Shipping Status Updated")
+            return redirect('home')
+        
         return render(request, "payment/shipped_dash.html", {"orders":orders})
     else:
         messages.success(request, "Access Denied")
@@ -95,10 +155,13 @@ def process_order(request):
             # Delete cart session
             for key in list(request.session.keys()):
                 if key == "session_key":
+                    # Delete the key
                     del request.session[key]
 
-            # Delete old cart from Profile
-            Profile.objects.filter(user__id=request.user.id).update(old_cart="")
+            # Delete old cart from Profile(Database)
+            current_user = Profile.objects.filter(user__id=request.user.id)
+            # Delete shopping cart in database
+            current_user.update(old_cart="")
 
             messages.success(request, "Order Placed!")
             return redirect('home')
