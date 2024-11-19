@@ -30,8 +30,8 @@
       <td>
         <form method="POST">
             {% csrf_token %}
-            <input type="hidden" name="shipping_status" valve="true">
-            <input type="hidden" name="num" valve="{{item.id}}">
+            <input type="hidden" name="shipping_status" value="true">
+            <input type="hidden" name="num" value="{{ item.id }}">
             <button type="Submit" class="btn btn-success btn-sm">Mark As Shipped</button>
         </form>
       

@@ -45,28 +45,40 @@ def orders(request, pk):
 
 def not_shipped_dash(request):
     if request.user.is_authenticated and request.user.is_superuser:
+        # Fetch orders that have not been shipped
         orders = Order.objects.filter(shipped=False)
-        if request.POST:
-            status = request.POST['shipping_status']
-            num = request.POST['num']
-            # Get the order
-            order = Order.objects.filter(id=num)
-            # grab Date and Time
-            now = datetime.datetime.now()
-            # update order
-            order.update(shipped=True, date_shipped=now)
-            # redirect
-            messages.success(request, "Shipping Status Updated")
-            return redirect('home')
         
-        return render(request, 'payment/not_shipped_dash.html', {"orders":orders})
+        if request.method == 'POST':
+            # Get shipping status and order ID from the POST request
+            status = request.POST.get('shipping_status')
+            num = request.POST.get('num')
+            
+            # Check if 'num' is valid
+            if not num or not num.isdigit():
+                messages.error(request, "Invalid Order ID.")
+                return redirect('not_shipped_dash')
+            
+            # Get the order and update its shipping status
+            order = Order.objects.filter(id=num).first()
+            if order:
+                now = datetime.datetime.now()
+                order.shipped = True
+                order.date_shipped = now
+                order.save()
+                messages.success(request, f"Shipping status for Order {num} updated successfully.")
+            else:
+                messages.error(request, f"Order with ID {num} does not exist.")
+            
+            return redirect('not_shipped_dash')
+        
+        # Render the dashboard page with the unshipped orders
+        return render(request, 'payment/not_shipped_dash.html', {"orders": orders})
+    
     else:
-        messages.success(request, "Access Denied")
+        # Redirect non-superuser or unauthenticated users
+        messages.error(request, "Access Denied.")
         return redirect('home')
-        # return render(request, "payment/not_shipped_dash.html", {"orders":orders})
-# else:
-#     messages.success(request, "Access Denied")
-#     return redirect('home')
+
 
 def shipped_dash(request):
     if request.user.is_authenticated and request.user.is_superuser:

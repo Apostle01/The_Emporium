@@ -10,11 +10,20 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+# import dj_database_url
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load our environmental variables
+load_dotenv()
+
+# password DB
+DB_PASSWORD = os.getenv('xLgqbiOUcXQWoTYPjMuLblFltTkLPGrL' 'test_password')
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,7 +35,7 @@ SECRET_KEY = 'django-insecure-n#k8&mz+s@*4$3li&l88!-%a6nzva)v)!ys7po6qc@816^34z0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['']
 
 
 # Application definition
@@ -80,8 +89,14 @@ WSGI_APPLICATION = 'the_emporium.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME', 'railway'),
+        'USER': os.getenv('DB_USER', 'postgres'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'test_password'),
+        'HOST': os.getenv('DB_HOST', '127.0.0.1'), 
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
