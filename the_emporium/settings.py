@@ -10,10 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-# import dj_database_url
+import dj_database_url
 from pathlib import Path
 import os
+from decouple import config
 from dotenv import load_dotenv
+
+# Define the environment variable
+ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')  # Defaults to 'development'
+POSTGRES_LOCALLY = os.getenv('POSTGRES_LOCALLY', 'False').lower() == 'true'  # Defaults to False
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,6 +31,9 @@ DB_PASSWORD = os.getenv('xLgqbiOUcXQWoTYPjMuLblFltTkLPGrL' 'test_password')
 
 
 
+ENVIRONMENT = config('ENVIRONMENT', default='development')
+POSTGRES_LOCALLY = config('POSTGRES_LOCALLY', default=False, cast=bool)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -35,7 +43,7 @@ SECRET_KEY = 'django-insecure-n#k8&mz+s@*4$3li&l88!-%a6nzva)v)!ys7po6qc@816^34z0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -89,21 +97,23 @@ WSGI_APPLICATION = 'the_emporium.wsgi.application'
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': BASE_DIR / 'db.sqlite3',
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'railway'),
-        'USER': os.getenv('DB_USER', 'postgres'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'test_password'),
-        'HOST': os.getenv('DB_HOST', '127.0.0.1'), 
-        'PORT': os.getenv('DB_PORT', '5432'),
+       #'ENGINE': 'django.db.backends.sqlite3',
+       #'NAME': BASE_DIR / 'db.sqlite3',
+       'ENGINE': 'django.db.backends.postgresql',
+       'NAME': os.getenv('DB_NAME', 'railway'),
+       'USER': os.getenv('DB_USER', 'postgres'),
+       'PASSWORD': os.getenv('DB_PASSWORD', 'test_password'),
+       'HOST': os.getenv('DB_HOST', 'postgres.railway.internal'),
+       'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
+POSTGRES_LOCALLY = True
+if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
+    DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL'))
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
