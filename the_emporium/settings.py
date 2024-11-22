@@ -9,25 +9,13 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-import dj_database_url
+
 from pathlib import Path
 import os
 
-from dotenv import load_dotenv
-
-ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
-POSTGRES_LOCALLY = os.getenv('POSTGRES_LOCALLY', 'False').lower() == 'true'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Load our environmental variables
-load_dotenv()
-
-
-
-# password DB
-DB_PASSWORD = os.environ['DB_PASSWORD']
 
 
 # Quick-start development settings - unsuitable for production
@@ -65,7 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'the_emporium.urls'
@@ -97,26 +85,18 @@ WSGI_APPLICATION = 'the_emporium.wsgi.application'
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': BASE_DIR / 'db.sqlite3',
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'railway'),
-        'USER': os.getenv('DB_NAME', 'postgres'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
-        'PORT': os.getenv('DB_PORT', '5432'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': 'your_database_name',
+        # 'USER': 'your_database_user',
+        # 'PASSWORD': 'your_password',
+        # 'HOST': '127.0.0.1',  # or your production database host
+        # 'PORT': '5432',
     }
 }
 
-IMTERNAL_IPS = (
-    '127.0.0.1',
-    'localhost:8000'
-)
 
-POSTGRES_LOCALLY = True
-
-if ENVIRONMENT == 'production':  # Correct variable name and equality check
-    DATABASES['default'] = dj_database_url.parse(os.getenv('DATABASE_URL'))  # Use `os.getenv` or `config` for env variables
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
