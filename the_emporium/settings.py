@@ -9,16 +9,14 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
 import dj_database_url
 from pathlib import Path
 import os
-from decouple import config
+
 from dotenv import load_dotenv
 
-# Define the environment variable
-ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')  # Defaults to 'development'
-POSTGRES_LOCALLY = os.getenv('POSTGRES_LOCALLY', 'False').lower() == 'true'  # Defaults to False
+ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
+POSTGRES_LOCALLY = os.getenv('POSTGRES_LOCALLY', 'False').lower() == 'true'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,25 +24,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Load our environmental variables
 load_dotenv()
 
+
+
 # password DB
-DB_PASSWORD = os.getenv('xLgqbiOUcXQWoTYPjMuLblFltTkLPGrL' 'test_password')
+DB_PASSWORD = os.environ['DB_PASSWORD']
 
-
-
-ENVIRONMENT = config('ENVIRONMENT', default='development')
-POSTGRES_LOCALLY = config('POSTGRES_LOCALLY', default=False, cast=bool)
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-n#k8&mz+s@*4$3li&l88!-%a6nzva)v)!ys7po6qc@816^34z0'
+SECRET_KEY = 'django-insecure-x4m$gfeda-r+)u05g*bzm%8#_vz&8-wl^3epo45gqi#_eqwvtq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
-
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -58,6 +53,8 @@ INSTALLED_APPS = [
     'haven',
     'cart',
     'payment',
+    # 'whitenoise.runserver_nostatic',
+    # 'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -68,9 +65,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'the_emporium.urls'
+
 
 TEMPLATES = [
     {
@@ -84,6 +83,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'cart.context_processors.cart',
+
             ],
         },
     },
@@ -93,27 +93,34 @@ WSGI_APPLICATION = 'the_emporium.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
-       #'ENGINE': 'django.db.backends.sqlite3',
-       #'NAME': BASE_DIR / 'db.sqlite3',
-       'ENGINE': 'django.db.backends.postgresql',
-       'NAME': os.getenv('DB_NAME', 'railway'),
-       'USER': os.getenv('DB_USER', 'postgres'),
-       'PASSWORD': os.getenv('DB_PASSWORD', 'test_password'),
-       'HOST': os.getenv('DB_HOST', 'postgres.railway.internal'),
-       'PORT': os.getenv('DB_PORT', '5432'),
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME', 'railway'),
+        'USER': os.getenv('DB_NAME', 'postgres'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
+IMTERNAL_IPS = (
+    '127.0.0.1',
+    'localhost:8000'
+)
+
 POSTGRES_LOCALLY = True
-if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
-    DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL'))
+
+if ENVIRONMENT == 'production':  # Correct variable name and equality check
+    DATABASES['default'] = dj_database_url.parse(os.getenv('DATABASE_URL'))  # Use `os.getenv` or `config` for env variables
 
 # Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -131,7 +138,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
+# https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -143,7 +150,7 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = ['static/']
@@ -156,7 +163,15 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Add paypal settings
+# Set sandbox to true
+# PAYPAL_TEST = True
+
+# PAYPAL_RECEIVER_EMAIL = 'business@codemytest.com' # Business Sandbox account
