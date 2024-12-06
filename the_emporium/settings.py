@@ -35,7 +35,7 @@ SECRET_KEY = 'django-insecure-n#k8&mz+s@*4$3li&l88!-%a6nzva)v)!ys7po6qc@816^34z0
 DEBUG = True
 
 ALLOWED_HOSTS = ['theemporium-production.up.railway.app', 'https://theemporium-production.up.railway.app']
-CSRF_TRUSTED_ORIGINS = ['theemporium-production.up.railway.app', 'https://theemporium-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://theemporium-production.up.railway.app']
 
 
 # Application definition
