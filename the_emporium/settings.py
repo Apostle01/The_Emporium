@@ -34,7 +34,8 @@ SECRET_KEY = 'django-insecure-n#k8&mz+s@*4$3li&l88!-%a6nzva)v)!ys7po6qc@816^34z0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['theemporium-production.up.railway.app', 'https://theemporium-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['theemporium-production.up.railway.app', 'https://theemporium-production.up.railway.app']
 
 
 # Application definition
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     'haven',
     'cart',
     'payment',
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
@@ -59,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'the_emporium.urls'
