@@ -1,2 +1,1 @@
-web: gunicorn haven.wsgi:application --log-file -
-web: python manage.py migrate && gunicorn haven.wsg
+web: python manage.py migrate && gunicorn the_emporium.wsgi:application --log-file -
