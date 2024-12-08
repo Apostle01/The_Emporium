@@ -34,7 +34,9 @@ SECRET_KEY = 'django-insecure-n#k8&mz+s@*4$3li&l88!-%a6nzva)v)!ys7po6qc@816^34z0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['theemporium-production.up.railway.app', 'https://theemporium-production.up.railway.app']
+# ALLOWED_HOSTS = ['theemporium-production.up.railway.app', 'https://theemporium-production.up.railway.app']
+ALLOWED_HOSTS = ['theemporium-production.up.railway.app', 'localhost', '127.0.0.1']
+
 CSRF_TRUSTED_ORIGINS = ['https://theemporium-production.up.railway.app']
 
 
